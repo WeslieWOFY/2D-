@@ -7,7 +7,11 @@ public class juqingEvent : MonoBehaviour
 {
     public string[] s;
     public string[] b;
+    public AudioClip waring;
     public Text[] Abb;
+    
+    public Image image;
+
     // Start is called before the first frame update
     int x;
     private Coroutine currentACoroutine;
@@ -18,10 +22,25 @@ public class juqingEvent : MonoBehaviour
     public float animDuration = 0.25f;   // 动画时长
     public float startScale = 1.5f;      // 入场起始大小（大）
     public float endScale = 1.5f;        // 出场结束大小（大）
+    private Material material;
+    private float timer = 0f;
+    private float totalDuration = 5f;
+    private float interval = 0.5f;
+    private bool isAlternating = false;
+    private bool isHighIntensity = true;
     
+    // HDR颜色强度控制
+    private Color normalColor = new Color(1f, 1f, 1f, 1f);      // 强度1的正常颜色
+    private Color originalColor;     // 强度2的高亮颜色
+    private Color zeroColor = new Color(0f, 0f, 0f, 0f);       // 强度0的黑色
     // 两个独立的协程变量
-    
+
     // ========== A的对话控制 ==========
+    void Start()
+    {
+        material = image.material;
+        originalColor = material.GetColor("_Color");
+    }
     public void SetAtext(int x)
     {
         // 先停止A正在进行的特效
@@ -133,5 +152,96 @@ public class juqingEvent : MonoBehaviour
             currentACoroutine = null;
         else if (targetText == Abb[1])
             currentBCoroutine = null;
+    }
+
+    public void PlayWaring()
+    {
+        AudioManager.Instance.PlaySFX(waring,GameManager.volume);
+    }
+
+        // 动画事件调用的方法
+    public void SetIntensityTo2()
+    {
+        SetIntensity(2f);
+    }
+    
+    // 动画事件调用的方法
+    public void SetIntensityTo0()
+    {
+        SetIntensity(1f);
+    }
+    private void SetIntensity(float intensity)
+    {
+        if (material == null) return;
+        
+        // 保持原始颜色色调，只调整强度乘数
+        Color newColor = new Color(
+            originalColor.r * intensity,
+            originalColor.g * intensity,
+            originalColor.b * intensity,
+            originalColor.a
+        );
+        
+        material.SetColor("_Color", newColor);
+    } 
+    public void PlayWarning()
+    {
+        StartCoroutine(SpawnAndFlash());
+    }
+
+    IEnumerator SpawnAndFlash()
+    {
+        float duration = 8f;
+        float elapsed = 0f;
+        float fadeTime = 0.1f;  // 淡入淡出时间
+        
+        // 创建全屏红色Image
+        GameObject flashObj = new GameObject("WarningFlash");
+        flashObj.transform.SetParent(transform);
+        
+        RectTransform rect = flashObj.AddComponent<RectTransform>();
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.sizeDelta = Vector2.zero;
+        rect.anchoredPosition = Vector2.zero;
+        
+        Image flashImage = flashObj.AddComponent<Image>();
+        flashObj.transform.SetAsLastSibling();
+        
+        while (elapsed < duration)
+        {
+            // 淡入红色
+            float fadeElapsed = 0f;
+            while (fadeElapsed < fadeTime)
+            {
+                float alpha = Mathf.Lerp(0f, 0.6f, fadeElapsed / fadeTime);
+                flashImage.color = new Color(1f, 0f, 0f, alpha);
+                fadeElapsed += Time.deltaTime;
+                yield return null;
+            }
+            
+            // 保持红色一小段时间
+            flashImage.color = new Color(1f, 0f, 0f, 0.6f);
+            yield return new WaitForSeconds(0.1f);
+            
+            if (elapsed + fadeTime + 0.1f >= duration) break;
+            
+            // 淡出
+            fadeElapsed = 0f;
+            while (fadeElapsed < fadeTime)
+            {
+                float alpha = Mathf.Lerp(0.6f, 0f, fadeElapsed / fadeTime);
+                flashImage.color = new Color(1f, 0f, 0f, alpha);
+                fadeElapsed += Time.deltaTime;
+                yield return null;
+            }
+            
+            flashImage.color = new Color(1f, 0f, 0f, 0f);
+            yield return new WaitForSeconds(0.1f);
+            
+            elapsed += fadeTime * 2 + 0.2f;
+        }
+        
+        Destroy(flashObj);
     }
 }
