@@ -1,0 +1,54 @@
+# Unity .gitignore
+# See: https://github.com/github/gitignore/blob/main/Unity.gitignore
+
+# ---------- Unity generated ----------
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Mm]emory[Mm]ain[Tt]ool*
+
+# ---------- Visual Studio / Rider ----------
+.vs/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# ---------- OS generated ----------
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# ---------- Asset meta data (keep .meta files, they are important) ----------
+# .meta files are tracked by Unity, do NOT ignore them
+
+# ---------- Crunch compression ----------
+*.crunch
+
+# ---------- TextMeshPro ----------
+*.astc.ktx2
+*.dds.ktx2
+*.png.ktx2
+*.jpg.ktx2
+*.tga.ktx2
+
+# ---------- Folders ----------
+Recordings/
