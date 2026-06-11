@@ -34,12 +34,17 @@ public class juqingEvent : MonoBehaviour
     private Color originalColor;     // 强度2的高亮颜色
     private Color zeroColor = new Color(0f, 0f, 0f, 0f);       // 强度0的黑色
     // 两个独立的协程变量
-
+    private Color baseTint; 
     // ========== A的对话控制 ==========
     void Start()
     {
-        material = image.material;
-        originalColor = material.GetColor("_Color");
+            material = image.material;
+    
+    // 读取材质原始颜色，剥离HDR强度，只保留色调和Alpha
+    Color raw = material.GetColor("_Color");
+    float maxRGB = Mathf.Max(raw.r, raw.g, raw.b, 1f);
+    baseTint = new Color(raw.r / maxRGB, raw.g / maxRGB, raw.b / maxRGB, raw.a);
+
     }
     public void SetAtext(int x)
     {
@@ -168,21 +173,18 @@ public class juqingEvent : MonoBehaviour
     // 动画事件调用的方法
     public void SetIntensityTo0()
     {
-        SetIntensity(1f);
+        SetIntensity(0.5f);
     }
     private void SetIntensity(float intensity)
     {
         if (material == null) return;
-        
         // 保持原始颜色色调，只调整强度乘数
-        Color newColor = new Color(
-            originalColor.r * intensity,
-            originalColor.g * intensity,
-            originalColor.b * intensity,
-            originalColor.a
-        );
-        
-        material.SetColor("_Color", newColor);
+        material.SetColor("_Color", new Color(
+            baseTint.r * intensity,
+            baseTint.g * intensity,
+            baseTint.b * intensity,
+            baseTint.a
+        ));
     } 
     public void PlayWarning()
     {
