@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -34,8 +34,10 @@ public class GameManager : MonoBehaviour
     public string petAttackType = "Fire"; // Fire, Ice, Thunder
     
     private int playerCurrentHealth;
-    
+    private int playerCurrentMana;
+
     public System.Action<int, int> OnPlayerTakeDamage;
+    public System.Action<int, int> OnPlayerManaChanged;
     public System.Action<int, int> Init;
     private void Awake()
     {
@@ -45,6 +47,8 @@ public class GameManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             playerCurrentHealth = playerMaxHealth;
+            playerCurrentMana = playerMaxMana;
+            playerCurrentMana = playerMaxMana;
         }
         else
         {
@@ -102,5 +106,32 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("游戏结束");
         // 游戏结束逻辑
+    }
+    public bool HasEnoughMana(int amount) => playerCurrentMana >= amount;
+
+    public bool TryUseMana(int amount)
+    {
+        if (playerCurrentMana < amount) return false;
+        playerCurrentMana -= amount;
+        OnPlayerManaChanged?.Invoke(playerCurrentMana, playerMaxMana);
+        return true;
+    }
+
+    public void RestoreMana(int amount)
+    {
+        playerCurrentMana = Mathf.Min(playerCurrentMana + amount, playerMaxMana);
+        OnPlayerManaChanged?.Invoke(playerCurrentMana, playerMaxMana);
+    }
+
+    public void FullyRestoreMana()
+    {
+        playerCurrentMana = playerMaxMana;
+        OnPlayerManaChanged?.Invoke(playerCurrentMana, playerMaxMana);
+    }
+
+    public int PlayerCurrentMana
+    {
+        get => playerCurrentMana;
+        set => playerCurrentMana = Mathf.Clamp(value, 0, playerMaxMana);
     }
 }

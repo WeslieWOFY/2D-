@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -176,7 +176,13 @@ public class PlayerKongzhi : MonoBehaviour
     {
         if (ctx.started)
         {
-            Debug.Log("蓄力中");
+            int cost = currentPet != null ? currentPet.manaCost : 0;
+            if (!GameManager.Instance.HasEnoughMana(cost))
+            {
+                Debug.Log("蓝量不足，无法蓄力");
+                return;
+            }
+            Debug.Log("蓝量充足，开始蓄力");
             currentPet?.StartCharge();
         }
         else if (ctx.canceled)

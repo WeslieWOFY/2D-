@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 //using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
@@ -25,6 +25,9 @@ public abstract class petbase : MonoBehaviour
     [Header("音效")]
     [SerializeField] protected AudioClip projectSFX;
     [SerializeField] protected AudioClip xuliattacksFX;
+
+    [Header("蓝量消耗")]
+    [SerializeField] public int manaCost = 30;
     [Header("状态")]
     protected bool canCharge = true;
     protected bool isCharging = false;
@@ -132,8 +135,11 @@ public abstract class petbase : MonoBehaviour
         isCharging = false;
         if (currentChargeTime >= chargeDuration)
         {
-            AudioManager.Instance.PlaySFX(xuliattacksFX,GameManager.volume);
-            PoolManager.Release(xulibulletPrefabs, xuli.position);
+            if (GameManager.Instance.TryUseMana(manaCost))
+            {
+                AudioManager.Instance.PlaySFX(xuliattacksFX,GameManager.volume);
+                PoolManager.Release(xulibulletPrefabs, xuli.position);
+            }
         }
         if(k)
         {
