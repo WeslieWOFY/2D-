@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,14 +6,18 @@ using UnityEngine.UI;
 
 public class StatsBar_HUD : MonoBehaviour
 {
-    // Start is called before the first frame update
     Canvas canvas;
-
     public static StatsBar_HUD Instance { get; private set; }
 
+    [Header("血条")]
     [SerializeField] Image fillImageBack;
     [SerializeField] Image fillImageFront;
 
+    [Header("蓝条")]
+    [SerializeField] Image manaFillBack;
+    [SerializeField] Image manaFillFront;
+
+    [Header("动画")]
     [SerializeField] float fillSpeed=0.1f;
     [SerializeField] bool delayFill=true;
     [SerializeField] float fillDelay=0.1f;
@@ -22,6 +26,10 @@ public class StatsBar_HUD : MonoBehaviour
     Coroutine bufferedFillingCoroutine;
     float currentFillValue;
     float targetFillValue;
+
+    Coroutine manaFillingCoroutine;
+    float currentManaFillValue;
+    float targetManaFillValue;
 
     float t;
     void Awake()
@@ -42,51 +50,65 @@ public class StatsBar_HUD : MonoBehaviour
 
     void Start()
     {
-        // 注册扣血和回血事件
         if (GameManager.Instance != null)
         {
             GameManager.Instance.OnPlayerTakeDamage -= HandleHealthChanged;
             GameManager.Instance.OnPlayerTakeDamage += HandleHealthChanged;
             GameManager.Instance.Init-=Initialize;
             GameManager.Instance.Init+=Initialize;
+            GameManager.Instance.OnPlayerManaChanged -= HandleManaChanged;
+            GameManager.Instance.OnPlayerManaChanged += HandleManaChanged;
         }
     }
     void OnEnable()
     {
-        // 注册扣血和回血事件
         if (GameManager.Instance != null)
         {
             GameManager.Instance.OnPlayerTakeDamage -= HandleHealthChanged;
             GameManager.Instance.OnPlayerTakeDamage += HandleHealthChanged;
             GameManager.Instance.Init-=Initialize;
             GameManager.Instance.Init+=Initialize;
+            GameManager.Instance.OnPlayerManaChanged -= HandleManaChanged;
+            GameManager.Instance.OnPlayerManaChanged += HandleManaChanged;
         }
     }
     void OnDisable()
     {
-        // 取消注册事件，避免内存泄漏
         if (GameManager.Instance != null)
         {
             GameManager.Instance.OnPlayerTakeDamage -= HandleHealthChanged;
             GameManager.Instance.Init-=Initialize;
+            GameManager.Instance.OnPlayerManaChanged -= HandleManaChanged;
         }
     }
 
     void HandleHealthChanged(int currentHealth, int changeAmount)
     {
-        Debug.Log("执行数");
         UpdateStats(currentHealth, GameManager.Instance.playerMaxHealth);
     }
 
+    void HandleManaChanged(int currentMana, int maxMana)
+    {
+        UpdateMana(currentMana, maxMana);
+    }
 
     public void Initialize(int currentValue,int playerMaxHealth)
     {
-        Debug.Log("初始化成功!");
         currentFillValue=currentValue*(1.0f)/playerMaxHealth;
         targetFillValue=playerMaxHealth*(1.0f);
         fillImageBack.fillAmount=currentFillValue;
         fillImageFront.fillAmount=currentFillValue;
+        InitializeMana(GameManager.Instance.PlayerCurrentMana, GameManager.Instance.playerMaxMana);
     }
+
+    void InitializeMana(int currentValue, int maxMana)
+    {
+        currentManaFillValue = currentValue * 1.0f / maxMana;
+        targetManaFillValue = currentManaFillValue;
+        if (manaFillBack != null) manaFillBack.fillAmount = currentManaFillValue;
+        if (manaFillFront != null) manaFillFront.fillAmount = currentManaFillValue;
+    }
+
     public void UpdateStats(int currentValue,int playerMaxHealth)
     {
         targetFillValue=currentValue*(1.0f)/playerMaxHealth;
@@ -107,6 +129,25 @@ public class StatsBar_HUD : MonoBehaviour
         }
     }
 
+    public void UpdateMana(int currentValue, int maxMana)
+    {
+        targetManaFillValue = currentValue * 1.0f / maxMana;
+        if (manaFillingCoroutine != null)
+        {
+            StopCoroutine(manaFillingCoroutine);
+        }
+        if (currentManaFillValue > targetManaFillValue)
+        {
+            if (manaFillFront != null) manaFillFront.fillAmount = targetManaFillValue;
+            manaFillingCoroutine = StartCoroutine(BufferedManaFillingCoroutine(manaFillBack));
+        }
+        if (currentManaFillValue < targetManaFillValue)
+        {
+            if (manaFillBack != null) manaFillBack.fillAmount = targetManaFillValue;
+            manaFillingCoroutine = StartCoroutine(BufferedManaFillingCoroutine(manaFillFront));
+        }
+    }
+
     IEnumerator BufferedFillingCoroutine(Image image)
     {
         if(delayFill)
@@ -119,6 +160,19 @@ public class StatsBar_HUD : MonoBehaviour
             t+=Time.deltaTime*fillSpeed;
             currentFillValue=Mathf.Lerp(currentFillValue,targetFillValue,t);
             image.fillAmount=currentFillValue;
+            yield return null;
+        }
+    }
+
+    IEnumerator BufferedManaFillingCoroutine(Image image)
+    {
+        if (delayFill) yield return waitForDelayFill;
+        float t = 0f;
+        while (t < 1f)
+        {
+            t += Time.deltaTime * fillSpeed;
+            currentManaFillValue = Mathf.Lerp(currentManaFillValue, targetManaFillValue, t);
+            if (image != null) image.fillAmount = currentManaFillValue;
             yield return null;
         }
     }
