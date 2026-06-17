@@ -88,7 +88,8 @@ public class GameManager : MonoBehaviour
     {
         int oldHealth = playerCurrentHealth;
         playerCurrentHealth = Mathf.Min(playerCurrentHealth + amount, playerMaxHealth);
-        int actualHeal = playerCurrentHealth - oldHealth;
+        //int actualHeal = playerCurrentHealth - oldHealth;
+        OnPlayerTakeDamage?.Invoke(Math.Max(playerCurrentHealth,0), playerMaxHealth);
     }
 
     public void FullyHealPlayer()
