@@ -166,7 +166,6 @@ public class PlayerKongzhi : MonoBehaviour
     {
         if (ctx.started)
         {
-            Debug.Log("成功发射子弹！");
             currentPet?.NormalAttack();
         }
         else if (ctx.canceled)
@@ -176,18 +175,17 @@ public class PlayerKongzhi : MonoBehaviour
     {
         if (ctx.started)
         {
-            int cost = currentPet != null ? currentPet.manaCost : 0;
-            if (!GameManager.Instance.HasEnoughMana(cost))
+            //int cost = currentPet != null ? currentPet.manaCost : 0;
+            /*if (!GameManager.Instance.HasEnoughMana(cost))
             {
                 Debug.Log("蓝量不足，无法蓄力");
                 return;
             }
-            Debug.Log("蓝量充足，开始蓄力");
+            Debug.Log("蓝量充足，开始蓄力");*/
             currentPet?.StartCharge();
         }
         else if (ctx.canceled)
         {
-            Debug.Log("蓄力取消");
             currentPet?.CancelCharge();
         }
     }

@@ -35,6 +35,15 @@ public class juqingEvent : MonoBehaviour
     private Color zeroColor = new Color(0f, 0f, 0f, 0f);       // 强度0的黑色
     // 两个独立的协程变量
     private Color baseTint; 
+
+    [Header("警告闪烁参数")]
+    public float flashDuration = 8f;        // 闪烁总时长
+    public float flashFadeTime = 0.1f;      // 淡入淡出时间
+    public float flashMaxAlpha = 0.6f;       // 最大透明度
+    public float flashHoldTime = 0.1f;       // 峰值保持时间
+    public float flashGapTime = 0.1f;        // 谷底间隔时间
+    public Color flashColor = new Color(1f, 0.08f, 0.08f, 1f);  // 红色基调（G/B调高=变淡，越低越纯红）
+
     // ========== A的对话控制 ==========
     void Start()
     {
@@ -193,57 +202,63 @@ public class juqingEvent : MonoBehaviour
 
     IEnumerator SpawnAndFlash()
     {
-        float duration = 8f;
         float elapsed = 0f;
-        float fadeTime = 0.1f;  // 淡入淡出时间
-        
+
         // 创建全屏红色Image
         GameObject flashObj = new GameObject("WarningFlash");
         flashObj.transform.SetParent(transform);
-        
+
         RectTransform rect = flashObj.AddComponent<RectTransform>();
         rect.anchorMin = Vector2.zero;
         rect.anchorMax = Vector2.one;
         rect.sizeDelta = Vector2.zero;
         rect.anchoredPosition = Vector2.zero;
-        
+
         Image flashImage = flashObj.AddComponent<Image>();
         flashObj.transform.SetAsLastSibling();
-        
-        while (elapsed < duration)
+
+        // 用参数里的颜色，Alpha 单独控制
+        Color baseColor = flashColor;
+
+        while (elapsed < flashDuration)
         {
-            // 淡入红色
+            // 淡入
             float fadeElapsed = 0f;
-            while (fadeElapsed < fadeTime)
+            while (fadeElapsed < flashFadeTime)
             {
-                float alpha = Mathf.Lerp(0f, 0.6f, fadeElapsed / fadeTime);
-                flashImage.color = new Color(1f, 0f, 0f, alpha);
+                float alpha = Mathf.Lerp(0f, flashMaxAlpha, fadeElapsed / flashFadeTime);
+                flashImage.color = new Color(baseColor.r, baseColor.g, baseColor.b, alpha);
                 fadeElapsed += Time.deltaTime;
                 yield return null;
             }
-            
-            // 保持红色一小段时间
-            flashImage.color = new Color(1f, 0f, 0f, 0.6f);
-            yield return new WaitForSeconds(0.1f);
-            
-            if (elapsed + fadeTime + 0.1f >= duration) break;
-            
+
+            // 保持峰值
+            flashImage.color = new Color(baseColor.r, baseColor.g, baseColor.b, flashMaxAlpha);
+            yield return new WaitForSeconds(flashHoldTime);
+
+            if (elapsed + flashFadeTime + flashHoldTime >= flashDuration) break;
+
             // 淡出
             fadeElapsed = 0f;
-            while (fadeElapsed < fadeTime)
+            while (fadeElapsed < flashFadeTime)
             {
-                float alpha = Mathf.Lerp(0.6f, 0f, fadeElapsed / fadeTime);
-                flashImage.color = new Color(1f, 0f, 0f, alpha);
+                float alpha = Mathf.Lerp(flashMaxAlpha, 0f, fadeElapsed / flashFadeTime);
+                flashImage.color = new Color(baseColor.r, baseColor.g, baseColor.b, alpha);
                 fadeElapsed += Time.deltaTime;
                 yield return null;
             }
-            
-            flashImage.color = new Color(1f, 0f, 0f, 0f);
-            yield return new WaitForSeconds(0.1f);
-            
-            elapsed += fadeTime * 2 + 0.2f;
+
+            flashImage.color = new Color(baseColor.r, baseColor.g, baseColor.b, 0f);
+            yield return new WaitForSeconds(flashGapTime);
+
+            elapsed += flashFadeTime * 2 + flashHoldTime + flashGapTime;
         }
-        
+
         Destroy(flashObj);
+    }
+
+    void nothing()
+    {
+        return ;
     }
 }

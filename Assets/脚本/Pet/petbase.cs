@@ -93,10 +93,6 @@ public abstract class petbase : MonoBehaviour
     /// <summary> 开始蓄力 </summary>
     public void StartCharge()
     {        // 开始播放
-        if(canvas!=null)
-        {
-            Debug.Log("画布找到!");
-        }
         canvas.gameObject.SetActive(true);
         AudioManager.Instance.PlayxuliSFX(GameManager.volume);
         if(attackCoroutine!=null)
