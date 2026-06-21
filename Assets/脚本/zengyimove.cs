@@ -31,7 +31,10 @@ public class zengyimove : MonoBehaviour
         centerPos = transform.position;
         mainCam = Camera.main;
     }
-
+    void OnEnable()
+    {
+        centerPos = transform.position;
+    }
     void Update()
     {
         // 1. 向左移动
@@ -63,13 +66,12 @@ public class zengyimove : MonoBehaviour
                 GameManager.Instance.HealPlayer((int)(GameManager.Instance.playerMaxHealth*0.2));
                 break;
                 case TriggerType.MPHeal :
-
+                GameManager.Instance.RestoreMana((int)(GameManager.Instance.playerMaxHealth*0.2));
                 break;
                 case TriggerType.SpeedUp:
 
                 break;
                 case TriggerType.Power:
-
                 break;
             }
             gameObject.SetActive(false);

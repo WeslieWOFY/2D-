@@ -120,7 +120,6 @@ public class PlayerKongzhi : MonoBehaviour
         topBound = topRight.y - padding;
         
         // 调试输出，检查边界是否正确
-        Debug.Log($"屏幕边界: 左={leftBound}, 右={rightBound}, 下={bottomBound}, 上={topBound}");
     }
     
     // 限制位置在边界内
@@ -208,7 +207,7 @@ public class PlayerKongzhi : MonoBehaviour
         }
         if (other.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("碰撞成功");
+            //Debug.Log("碰撞成功");
             if(flashRed!=null)
             {
                 StopCoroutine(FlashRed());

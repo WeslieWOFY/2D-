@@ -14,9 +14,9 @@ public class FlyingSheep : Enemy
     [SerializeField] private float bulletDelay = 0.5f;  // 子弹生成延迟（配合动画）
 
     private Coroutine shootCoroutine;
-    private Coroutine flashRedCoroutine;
+    private Coroutine verticalMoveRoutine;
+
     private Animator animator;
-    private bool isDead;
 
     // 垂直移动的目标偏移量（相对初始位置）
     private float verticalTargetOffset;
@@ -39,7 +39,7 @@ public class FlyingSheep : Enemy
     protected override void OnEnable()
     {
         base.OnEnable();
-        isDead = false;
+        isDie = false;
 
         // 记录初始Y坐标
         initialY = transform.position.y;
@@ -53,7 +53,8 @@ public class FlyingSheep : Enemy
         shootCoroutine = StartCoroutine(ShootRoutine());
 
         // 启动垂直移动协程
-        StartCoroutine(VerticalMoveRoutine());
+        if(verticalMoveRoutine!=null) StopCoroutine(verticalMoveRoutine);
+        verticalMoveRoutine=StartCoroutine(VerticalMoveRoutine());
     }
 
     protected override void OnDisable()
@@ -72,9 +73,11 @@ public class FlyingSheep : Enemy
     {
         while (true)
         {
+            if(isDie)
+            break;
             yield return new WaitForSeconds(verticalMoveInterval);
 
-            if (gameObject.activeSelf && currentHP > 0 && !isDead)
+            if (gameObject.activeSelf && currentHP > 0 && !isDie)
             {
                 // 获取屏幕边界（世界坐标）
                 Camera cam = Camera.main;
@@ -92,7 +95,6 @@ public class FlyingSheep : Enemy
                     // 随机生成上半区的Y坐标（0.5 到 1 之间，留出边距）
                     float randomViewportY = Random.Range(0.55f, 0.95f);
                     targetY = cam.ViewportToWorldPoint(new Vector3(0, randomViewportY, 0)).y;
-                    Debug.Log("在下半区，移动到上半区");
                 }
                 // 如果在屏幕上半区（y > 0.5），随机移动到下半区
                 else
@@ -100,13 +102,12 @@ public class FlyingSheep : Enemy
                     // 随机生成下半区的Y坐标（0 到 0.5 之间，留出边距）
                     float randomViewportY = Random.Range(0.05f, 0.45f);
                     targetY = cam.ViewportToWorldPoint(new Vector3(0, randomViewportY, 0)).y;
-                    Debug.Log("在上半区，移动到下半区");
                 }
                 
                 // 开始垂直移动
                 currentState = SheepState.VerticalAdjusting;
                 yield return StartCoroutine(MoveVerticalTo(targetY));
-                
+
                 // 垂直移动完成，回到向左移动状态
                 currentState = SheepState.MovingLeft;
             }
@@ -157,7 +158,7 @@ public class FlyingSheep : Enemy
             {
                 yield return new WaitForSeconds(shootInterval);
 
-                if (gameObject.activeSelf && currentHP > 0 && !isDead)
+                if (gameObject.activeSelf && currentHP > 0 && !isDie)
                 {
                     Shoot();
                 }
@@ -216,7 +217,7 @@ public class FlyingSheep : Enemy
 
     protected override void OnDeath()
     {
-        isDead = true;
+        isDie = true;
         if (shootCoroutine != null)
         {
             StopCoroutine(shootCoroutine);
@@ -226,6 +227,11 @@ public class FlyingSheep : Enemy
         {
             StopCoroutine(flashRedCoroutine);
             flashRedCoroutine = null;
+        }
+        if(verticalMoveRoutine!=null)
+        {
+            StopCoroutine(verticalMoveRoutine);
+            verticalMoveRoutine=null;
         }
         base.OnDeath();
     }
@@ -242,38 +248,11 @@ public class FlyingSheep : Enemy
             StopCoroutine(flashRedCoroutine);
             flashRedCoroutine = null;
         }
+        if(verticalMoveRoutine!=null)
+        {
+            StopCoroutine(verticalMoveRoutine);
+            verticalMoveRoutine=null;
+        }
         base.OnExitScreen();
-    }
-
-    protected override void OnTriggerEnter2D(Collider2D other)
-    {
-        if (isDead) return;
-
-        if (other.CompareTag("PlayerBullet"))
-        {
-            Bullet bullet = other.GetComponent<Bullet>();
-            if (flashRedCoroutine != null)
-                StopCoroutine(flashRedCoroutine);
-
-            flashRedCoroutine = StartCoroutine(FlashRed());
-
-            int totalDamage = bullet.damage + GameManager.Instance.attackPower;
-            TakeDamage(totalDamage);
-            if(bullet.getfalse())
-            {
-                other.gameObject.SetActive(false);
-            }
-        }
-    }
-
-    private IEnumerator FlashRed()
-    {
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.color = Color.red;
-            yield return new WaitForSeconds(flashDuration);
-            spriteRenderer.color = originalColor;
-        }
-        flashRedCoroutine = null;
     }
 }

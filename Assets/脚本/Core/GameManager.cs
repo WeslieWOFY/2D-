@@ -69,9 +69,7 @@ public class GameManager : MonoBehaviour
     {
         int finalDamage = Mathf.Max(1, damage - playerDefense);
         playerCurrentHealth -= finalDamage;
-        Debug.Log($"人物受到 {finalDamage} 伤害，剩余血量 {playerCurrentHealth}");
         OnPlayerTakeDamage?.Invoke(Math.Max(playerCurrentHealth,0), playerMaxHealth);
-        Debug.Log("扣血事件已触发");  // 成功输出
         if (playerCurrentHealth <= 0)
         {
             playerCurrentHealth=0;
@@ -105,7 +103,7 @@ public class GameManager : MonoBehaviour
     }
     private void OnPlayerDeath()
     {
-        Debug.Log("游戏结束");
+        //Debug.Log("游戏结束");
         // 游戏结束逻辑
     }
     public bool HasEnoughMana(int amount) => playerCurrentMana >= amount;

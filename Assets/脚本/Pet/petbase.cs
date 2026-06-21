@@ -87,7 +87,6 @@ public abstract class petbase : MonoBehaviour
             attackCoroutine = null;
         }
         k=false;
-        Debug.Log("取消了攻击");
     }
 
     /// <summary> 开始蓄力 </summary>
@@ -118,7 +117,6 @@ public abstract class petbase : MonoBehaviour
             image.fillAmount+=Time.deltaTime/chargeDuration;
             if(image.fillAmount>=1f)
             image.fillAmount=1f;
-            Debug.Log($"Image fillAmount设为0.5，当前值: {image.fillAmount}");
             yield return null;
         }
     }

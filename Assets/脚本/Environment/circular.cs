@@ -13,12 +13,14 @@ public class circular : MonoBehaviour
     public float radius = 2f;
     public float duration = 2f;
     
-    private Vector2 localStartPos2D;
+    private Vector3 worldStartPos;       // 世界坐标起点
+    private Vector3 parentStartPos;      // 父物体世界坐标起点
     private Coroutine currentMotion;
 
     void OnEnable()
     {
-        localStartPos2D = transform.localPosition;
+        worldStartPos = transform.position;
+        parentStartPos = transform.parent.position;
         
         if (currentMotion != null)
             StopCoroutine(currentMotion);
@@ -43,9 +45,10 @@ public class circular : MonoBehaviour
     // 模式1：圆心在上方，逆时针
     IEnumerator MotionYUpAntiClockwise()
     {
-        Vector3 center = (Vector3)(localStartPos2D + Vector2.up * radius);
-        Vector3 r = (Vector3)localStartPos2D - center;  // 半径向量：圆心指向物体
-        float rotationSpeed = 360f / duration;            // 每秒旋转度数
+        // 圆心：世界空间中的起始位置 + 世界Y轴上方 * 半径
+        Vector3 worldCenter = worldStartPos + Vector3.up * radius;
+        Vector3 r = worldStartPos - worldCenter;
+        float rotationSpeed = 360f / duration;
         float elapsed = 0f;
 
         while (elapsed < duration)
@@ -55,47 +58,46 @@ public class circular : MonoBehaviour
             // 逆时针旋转半径向量
             r = Quaternion.AngleAxis(rotationSpeed * Time.deltaTime, Vector3.forward) * r;
             
-            // 圆心 + 半径 = 圆上的点
-            Vector3 pos = center + r;
-            transform.localPosition = new Vector3(pos.x, pos.y, transform.localPosition.z);
+            // 圆心跟随父物体平移（不跟随旋转）
+            Vector3 parentDelta = transform.parent.position - parentStartPos;
+            transform.position = worldCenter + parentDelta + r;
             
             yield return null;
         }
 
-        transform.localPosition = new Vector3(localStartPos2D.x, localStartPos2D.y, transform.localPosition.z);
+        // 回到跟随父物体平移后的初始位置
+        transform.position = worldStartPos + (transform.parent.position - parentStartPos);
     }
 
     // 模式2：圆心在左边，逆时针
     IEnumerator MotionXLeftAntiClockwise()
     {
-        Vector3 center = (Vector3)(localStartPos2D + Vector2.left * radius);
-        Vector3 r = (Vector3)localStartPos2D - center;  // 半径向量：圆心指向物体
-        float rotationSpeed = 360f / duration;            // 每秒旋转度数
+        Vector3 worldCenter = worldStartPos + Vector3.left * radius;
+        Vector3 r = worldStartPos - worldCenter;
+        float rotationSpeed = 360f / duration;
         float elapsed = 0f;
 
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
             
-            // 逆时针旋转半径向量
             r = Quaternion.AngleAxis(rotationSpeed * Time.deltaTime, Vector3.forward) * r;
             
-            // 圆心 + 半径 = 圆上的点
-            Vector3 pos = center + r;
-            transform.localPosition = new Vector3(pos.x, pos.y, transform.localPosition.z);
+            Vector3 parentDelta = transform.parent.position - parentStartPos;
+            transform.position = worldCenter + parentDelta + r;
             
             yield return null;
         }
 
-        transform.localPosition = new Vector3(localStartPos2D.x, localStartPos2D.y, transform.localPosition.z);
+        transform.position = worldStartPos + (transform.parent.position - parentStartPos);
     }
 
     // 模式3：圆心在下方，顺时针
     IEnumerator MotionYDownClockwise()
     {
-        Vector3 center = (Vector3)(localStartPos2D + Vector2.down * radius);
-        Vector3 r = (Vector3)localStartPos2D - center;  // 半径向量：圆心指向物体
-        float rotationSpeed = 360f / duration;            // 每秒旋转度数
+        Vector3 worldCenter = worldStartPos + Vector3.down * radius;
+        Vector3 r = worldStartPos - worldCenter;
+        float rotationSpeed = 360f / duration;
         float elapsed = 0f;
 
         while (elapsed < duration)
@@ -105,13 +107,12 @@ public class circular : MonoBehaviour
             // 顺时针旋转半径向量（负角度）
             r = Quaternion.AngleAxis(-rotationSpeed * Time.deltaTime, Vector3.forward) * r;
             
-            // 圆心 + 半径 = 圆上的点
-            Vector3 pos = center + r;
-            transform.localPosition = new Vector3(pos.x, pos.y, transform.localPosition.z);
+            Vector3 parentDelta = transform.parent.position - parentStartPos;
+            transform.position = worldCenter + parentDelta + r;
             
             yield return null;
         }
 
-        transform.localPosition = new Vector3(localStartPos2D.x, localStartPos2D.y, transform.localPosition.z);
+        transform.position = worldStartPos + (transform.parent.position - parentStartPos);
     }
 }

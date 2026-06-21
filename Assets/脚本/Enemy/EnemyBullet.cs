@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 public class EnemyBullet : MonoBehaviour  // 确保继承 MonoBehaviour
@@ -33,7 +34,7 @@ public class EnemyBullet : MonoBehaviour  // 确保继承 MonoBehaviour
         Move();
         CheckBounds();
     }
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         isdade=false;
         if(GetComponent<SpriteRenderer>()!=null)
@@ -90,6 +91,16 @@ public class EnemyBullet : MonoBehaviour  // 确保继承 MonoBehaviour
     public void SetDamage(int damage)
     {
         this.damage=damage;
+    }
+
+    public void SetMoveSpeed(float speed)
+    {
+        this.moveSpeed = speed;
+    }
+
+    public float GetMoveSpeed()
+    {
+        return moveSpeed;
     }
     IEnumerator Setfasle(float cd)
     {

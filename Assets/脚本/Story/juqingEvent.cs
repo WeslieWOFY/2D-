@@ -257,8 +257,4 @@ public class juqingEvent : MonoBehaviour
         Destroy(flashObj);
     }
 
-    void nothing()
-    {
-        return ;
-    }
 }

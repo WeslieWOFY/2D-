@@ -29,7 +29,6 @@ public class SplittingBullet : Bullet
 
     private void Split()
     {
-        Debug.Log("成功分裂");
         hasSplit = true;
         
         // 向上60度
@@ -46,16 +45,11 @@ public class SplittingBullet : Bullet
     {
         if (splitBulletPrefab == null)
         {
-            Debug.LogError("Split bullet prefab is not assigned!");
             return;
         }
         
         // 使用对象池生成分裂子弹，传入位置和旋转
         GameObject splitBullet = PoolManager.Release(splitBulletPrefab, transform.position, rotation);
-        if(splitBullet==null)
-        {
-            Debug.Log("分裂失败");
-        }
         if (splitBullet != null)
         {
             // 设置伤害值
@@ -64,7 +58,6 @@ public class SplittingBullet : Bullet
             {
                 bulletComp.damage = damage; // 继承伤害
             }
-            
             // 如果是分裂子弹类型，确保它不能再分裂（实际上因为hasSplit已经重置为false，它不会分裂）
             SplittingBullet splittingComp = splitBullet.GetComponent<SplittingBullet>();
             if (splittingComp != null)

@@ -24,7 +24,6 @@ public class jixietunshu : Enemy
 
     private Camera mainCamera; // 主摄像机引用
     private Animator animator;
-    bool isDie;
     private enum EnemyState
     {
         InitialRandomMove, // 初始随机移动阶段
@@ -60,7 +59,6 @@ public class jixietunshu : Enemy
     
     // 启动新的协程
         shootCoroutine = StartCoroutine(ShootRoutine());
-        Debug.Log("成功");
     }
     
     protected override void OnDisable()
@@ -124,42 +122,27 @@ public class jixietunshu : Enemy
             // 只有在启用状态且未死亡时才射击
             if (gameObject.activeSelf && currentHP > 0)
             {
-                Debug.Log("射击中");
-                Shoot();
+                animator.SetTrigger("shoot");
             }
         }
     }
-    private IEnumerator DelayedShoot(float delay)
+    /*private IEnumerator DelayedShoot(float delay)
     {
         yield return new WaitForSeconds(delay);
         GameObject bullet=PoolManager.Release(bulletPrefab, muzz.position);
         bullet.GetComponent<EnemyBullet>().SetDamage(damege);
-    }
-    private void Shoot()
+    }*/
+    void Bullet()
     {
-        //isshoot=true;
-        //animator.Rebind();  // 重置所有参数和状态
-        //animator.Update(0); // 强制更新到0时刻
-        animator.SetTrigger("shoot");
-        StartCoroutine(DelayedShoot(0.5f));
-        // 使用对象池生成子弹        
-        /*if (bullet != null)
+        if (bulletPrefab != null)
         {
             // 获取子弹组件并设置方向（向左射击）
+            GameObject bullet=PoolManager.Release(bulletPrefab, muzz.position);
             EnemyBullet enemyBullet = bullet.GetComponent<EnemyBullet>();
-            if (enemyBullet != null)
-            {
-                enemyBullet.SetDirection(Vector2.left);
-            }
-            
+            enemyBullet.SetDamage(damege);
             // 可选：添加音效、特效等
             // AudioManager.PlaySound(shootSound);
         }
-        else
-        {
-            Debug.LogWarning("从对象池获取子弹失败！");
-        }*/
-        //isshoot=false;
     }
     
     public override void OnMove()
@@ -241,30 +224,7 @@ public class jixietunshu : Enemy
         base.OnExitScreen();
     }
     
-    // 可选：添加碰撞伤害逻辑
-    protected override void OnTriggerEnter2D(Collider2D other)
-    {
-        if(isDie) return ;
-        if (other.CompareTag("PlayerBullet"))
-        {
-            Bullet bullet = other.GetComponent<Bullet>();    
-            if(flashRed!=null)
-            {
-                StopCoroutine(flashRed);
-                flashRed=null;
-            }
-            if(flashRed==null)
-            {
-               flashRed=StartCoroutine(FlashRed());
-            }
-            TakeDamage(bullet.damage+GameManager.Instance.attackPower);
-            if(bullet.getfalse())
-            {
-                other.gameObject.SetActive(false);
-            }
-        }
-    }
-    IEnumerator FlashRed()
+    /*IEnumerator FlashRed()
     {
         if (spriteRenderer != null)
         {
@@ -272,5 +232,5 @@ public class jixietunshu : Enemy
             yield return new WaitForSeconds(flashDuration);
             spriteRenderer.color = originalColor;
         }
-    }
+    }*/
 }
