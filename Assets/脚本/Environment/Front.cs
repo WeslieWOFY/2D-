@@ -12,6 +12,7 @@ public class Front : MonoBehaviour
     [SerializeField] private float randomY =2f;
     [SerializeField]    public float maxLifeTime = 15f;  // 最大生命周期（秒），超时强制回收
     [SerializeField] private float sp = 2f;
+    [SerializeField] private float first = 2f;
 
     private Camera mainCamera;
     
@@ -23,10 +24,11 @@ public class Front : MonoBehaviour
     
     IEnumerator SpawnLoop()
     {
+        yield return new WaitForSeconds(first);
         while (true)
         {
-            yield return new WaitForSeconds(spawnInterval);
             StartCoroutine(SpawnObject());
+            yield return new WaitForSeconds(spawnInterval);
         }
     }
     

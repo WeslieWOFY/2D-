@@ -30,6 +30,7 @@ public class PlayerKongzhi : MonoBehaviour
     private float bottomBound;
     private float topBound;
     
+    private int lastVerticalDirection = 0; 
     private Coroutine flashRed=null;
     private void Start()
     {
@@ -96,8 +97,42 @@ public class PlayerKongzhi : MonoBehaviour
         {
             ClampPosition();
         }
+        // 判断竖直方向并切换动画（仅方向改变时触发）
+        int currentVerticalDirection = 0;
+        if (moveInput.y > 0)
+            currentVerticalDirection = 1;   // 上
+        else if (moveInput.y < 0)
+            currentVerticalDirection = -1;  // 下
+
+        if (currentVerticalDirection != lastVerticalDirection)
+        {
+            switch (currentVerticalDirection)
+            {
+                case 1:
+                    SwitchToUpAnimation();
+                    break;
+                case -1:
+                    SwitchToDownAnimation();
+                    break;
+                case 0:
+                    SwitchToIdleAnimation();
+                    break;
+            }
+            lastVerticalDirection = currentVerticalDirection;
+        }
     }
-    
+    private void SwitchToUpAnimation()
+    {
+        // TODO: 实现向上动画切换
+    }
+    private void SwitchToDownAnimation()
+    {
+        // TODO: 实现向下动画切换
+    }
+    private void SwitchToIdleAnimation()
+    {
+        // TODO: 实现默认/待机动画切换
+    }
     // 移动输入回调（通过新输入系统调用）
     public void Move(InputAction.CallbackContext ctx)
     {

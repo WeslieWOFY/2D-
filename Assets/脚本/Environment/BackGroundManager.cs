@@ -11,7 +11,9 @@ public class BackGroundManager : MonoBehaviour
     [SerializeField] private float firstspawn = 10f;
     [SerializeField] private float spawnInterval = 10f;
     [SerializeField] private float randomY =2f;
-    [SerializeField] public float maxLifeTime = 15f;  // 最大生命周期（秒），超时强制回收
+
+    [SerializeField] private float limit =12f;
+
     private Camera mainCamera;
     
     void Start()
@@ -39,7 +41,7 @@ public class BackGroundManager : MonoBehaviour
         
         
         // 生成位置（屏幕外）
-        Vector3 spawnPos = new Vector3(rightEdge + 12f, randomY, 0);
+        Vector3 spawnPos = new Vector3(rightEdge + limit, randomY, 0);
         
         // 从对象池获取
         PoolManager.Release(backgroundPrefab, spawnPos);

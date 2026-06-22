@@ -95,7 +95,7 @@ public class EnemyBullet : MonoBehaviour  // 确保继承 MonoBehaviour
 
     public void SetMoveSpeed(float speed)
     {
-        this.moveSpeed = speed;
+        moveSpeed = speed;
     }
 
     public float GetMoveSpeed()

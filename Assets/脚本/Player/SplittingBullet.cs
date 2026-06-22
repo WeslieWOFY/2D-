@@ -58,7 +58,7 @@ public class SplittingBullet : Bullet
             {
                 bulletComp.damage = damage; // 继承伤害
             }
-            // 如果是分裂子弹类型，确保它不能再分裂（实际上因为hasSplit已经重置为false，它不会分裂）
+            // 如果是分裂子弹类型，确保它不能再分裂
             SplittingBullet splittingComp = splitBullet.GetComponent<SplittingBullet>();
             if (splittingComp != null)
             {
