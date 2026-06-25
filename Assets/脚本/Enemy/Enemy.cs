@@ -13,7 +13,7 @@ using UnityEngine;
     public WaitForSeconds waitbaozha;
     public int scoreValue = 100;
     public float flashDuration = 0.1f;  // 变红持续时间
-    
+    WaitForSeconds FlashDuration;
     public int damege = 10;  // 伤害
     
     public int colliderdamege=20;
@@ -27,16 +27,18 @@ using UnityEngine;
    [SerializeField]  protected Transform[] boomTransform;
 
     [SerializeField] protected AudioClip baozhaSFX;
-    [SerializeField] protected int temp=3;
+    protected Animator animator;
     protected virtual void Awake()
     {
         currentHP = maxHP;
         spriteRenderer = GetComponent<SpriteRenderer>();
+        animator=GetComponent<Animator>();
+        FlashDuration=new WaitForSeconds(flashDuration);
         if (spriteRenderer != null)
         {
             originalColor = spriteRenderer.color;
         }
-        waitbaozha=new WaitForSeconds(baozhajiange);
+        waitbaozha=new WaitForSeconds(baozhajiange/(boomTransform.Length==0?1:boomTransform.Length));
     }
 
     protected virtual void Update()
@@ -49,6 +51,7 @@ using UnityEngine;
     {
         currentHP = maxHP;
         spriteRenderer.color=originalColor;
+        isDie=false;
     }
     protected virtual void OnDisable()
     {
@@ -76,27 +79,21 @@ using UnityEngine;
     // 死亡
     protected IEnumerator Baozha()
     {
-        int t=0;
-        int cnt=0;
+        AudioManager.Instance.PlaySFX(baozhaSFX,GameManager.volume);
         foreach(Transform transform in boomTransform)
         {
-            if(t%temp==0)
-            {
-                cnt++;
-                AudioManager.Instance.PlaySFX(baozhaSFX,GameManager.volume);
-                Debug.Log("响了"+cnt+"声");
-            }
             PoolManager.Release(baozha,transform.position);
             yield return waitbaozha;
-            t++;
         }
         gameObject.SetActive(false);
     }
     protected virtual void OnDeath()
     {
         //if(isDie) return ;
+        isDie=true;
         moveSpeed=0;
-        GetComponent<Animator>().speed = 0;
+        if(animator!=null)
+        animator.speed = 0;
         // 可以在这里播放死亡动画、生成道具等
         StartCoroutine(Baozha());
     }
@@ -135,8 +132,13 @@ using UnityEngine;
         if (spriteRenderer != null)
         {
             spriteRenderer.color = Color.red;
-            yield return new WaitForSeconds(flashDuration);
+            yield return FlashDuration;
             spriteRenderer.color = originalColor;
         }
+    }
+
+    protected virtual void Retreat()
+    {
+        
     }
 }

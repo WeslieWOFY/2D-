@@ -39,8 +39,6 @@ public class FlyingSheep : Enemy
     protected override void OnEnable()
     {
         base.OnEnable();
-        isDie = false;
-
         // 记录初始Y坐标
         initialY = transform.position.y;
         verticalTargetOffset = 0f;
@@ -217,7 +215,6 @@ public class FlyingSheep : Enemy
 
     protected override void OnDeath()
     {
-        isDie = true;
         if (shootCoroutine != null)
         {
             StopCoroutine(shootCoroutine);

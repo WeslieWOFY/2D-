@@ -15,20 +15,13 @@ public class Zhuqingting : Enemy
 
     private Coroutine shootCoroutine;
     private Coroutine switchDirectionCoroutine;
-    private Animator animator;
     private Vector2 currentMoveDirection;   // 当前移动方向
     private bool startFromVertical;         // 是否从上下两端刷出（竖直运动阶段）
 
-    protected override void Awake()
-    {
-        base.Awake();
-        animator = GetComponent<Animator>();
-    }
 
     protected override void OnEnable()
     {
         base.OnEnable();
-        isDie = false;
 
         // 根据初始位置判断运动方式
         DetermineInitialDirection();

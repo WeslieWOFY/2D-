@@ -14,18 +14,18 @@ public class EnemyBullet : MonoBehaviour  // 确保继承 MonoBehaviour
     public bool isrotate=false;
     [Header("边界设置")]
     [SerializeField] private bool disableOutOfBounds = true;  // 超出边界是否禁用
-    [SerializeField] private float boundsOffset = 1f;         // 超出屏幕边界的偏移量（尽可能小）
+    [SerializeField] protected float boundsOffset = 1f;         // 超出屏幕边界的偏移量（尽可能小）
     bool isdade;
-    private float leftBoundary;
-    private float rightBoundary;
-    private float topBoundary;
-    private float bottomBoundary;
+    protected float leftBoundary;
+    protected float rightBoundary;
+    protected float topBoundary;
+    protected float bottomBoundary;
     private void Start()
     {
         // 计算屏幕边界（使用主相机）
         CalculateScreenBounds();
     }
-    private void Update()
+    protected virtual void Update()
     {
         if(isrotate)
         {
@@ -40,7 +40,7 @@ public class EnemyBullet : MonoBehaviour  // 确保继承 MonoBehaviour
         if(GetComponent<SpriteRenderer>()!=null)
         GetComponent<SpriteRenderer>().enabled = true;
     }
-    private void CheckBounds()
+    protected virtual void CheckBounds()
     {
         if (!disableOutOfBounds) return;
         
@@ -54,11 +54,11 @@ public class EnemyBullet : MonoBehaviour  // 确保继承 MonoBehaviour
         }
     }
 
-    private void DisableBullet()
+    protected void DisableBullet()
     {
         gameObject.SetActive(false);
     }
-    private void CalculateScreenBounds()
+    protected void CalculateScreenBounds()
     {
         Camera mainCamera = Camera.main;
         if (mainCamera != null)
@@ -75,9 +75,8 @@ public class EnemyBullet : MonoBehaviour  // 确保继承 MonoBehaviour
     }
     public void Move()
     {
-        transform.position += (Vector3)moveDirection * moveSpeed * Time.deltaTime;
+        transform.Translate(moveDirection * moveSpeed * Time.deltaTime);
     }
-    
     public void SetMoveDirection(Vector2 direction)
     {
         moveDirection = direction.normalized;

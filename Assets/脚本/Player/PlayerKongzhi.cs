@@ -4,11 +4,16 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerKongzhi : MonoBehaviour
 {
     [Header("移动设置")]
     [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float knockbackDuration = 0.15f; // 弹开时间
+    [SerializeField] private float knockbackForceMultiplier = 1.2f; // 弹开力度倍数
     private Vector2 moveInput;
+    private float knockbackEnd;
+    private GameObject lastHitBy; // 上一次碰撞的对象，弹开期间同一对象不重复扣血
     
     [Header("边界设置")]
     [SerializeField] private bool useScreenBounds = true;
@@ -30,8 +35,15 @@ public class PlayerKongzhi : MonoBehaviour
     private float bottomBound;
     private float topBound;
     
-    private int lastVerticalDirection = 0; 
+    private int lastVerticalDirection = 0;
     private Coroutine flashRed=null;
+    private Rigidbody2D rb;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
     private void Start()
     {
         mainCamera = Camera.main;
@@ -88,15 +100,18 @@ public class PlayerKongzhi : MonoBehaviour
     }
     private void Update()
     {
-        // 移动人物
-        Vector2 movement = moveInput * moveSpeed * Time.deltaTime;
-        transform.Translate(movement);
-        
+        // 弹开期间不覆盖 velocity，让物理自然分离
+        if (Time.time >= knockbackEnd)
+        {
+            rb.velocity = moveInput * moveSpeed;
+        }
+
         // 限制边界
         if (useScreenBounds)
         {
             ClampPosition();
         }
+
         // 判断竖直方向并切换动画（仅方向改变时触发）
         int currentVerticalDirection = 0;
         if (moveInput.y > 0)
@@ -160,10 +175,10 @@ public class PlayerKongzhi : MonoBehaviour
     // 限制位置在边界内
     private void ClampPosition()
     {
-        Vector3 pos = transform.position;
+        Vector2 pos = rb.position;
         pos.x = Mathf.Clamp(pos.x, leftBound-leftover, rightBound-rightover);
         pos.y = Mathf.Clamp(pos.y, bottomBound-downover, topBound-upover);
-        transform.position = pos;
+        rb.position = pos;
     }
     
     // 可视化边界（在Scene视图中显示）
@@ -225,35 +240,48 @@ public class PlayerKongzhi : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("EmenyBullet"))
+        GameObject obj = other.gameObject;
+
+        if (obj.CompareTag("EmenyBullet"))
         {
-            if(flashRed!=null)
+            Vector2 pushDir = ((Vector2)transform.position - other.GetContact(0).point).normalized;
+            rb.velocity = pushDir * moveSpeed * knockbackForceMultiplier;
+            knockbackEnd = Time.time + knockbackDuration;
+
+            if(flashRed != null)
             {
                 StopCoroutine(FlashRed());
                 if (damageOverlay != null)
-                {
                     damageOverlay.color = new Color(1f, 0.5f, 0.5f, 0f);
-                }
-                flashRed=null;
+                flashRed = null;
             }
-            flashRed=StartCoroutine(FlashRed());
-            EnemyBullet bullet = other.gameObject.GetComponent<EnemyBullet>();    
+            flashRed = StartCoroutine(FlashRed());
+            EnemyBullet bullet = obj.GetComponent<EnemyBullet>();
             GameManager.Instance.PlayerTakeDamage(bullet.GetDamage());
+            return;
         }
-        if (other.gameObject.CompareTag("Enemy"))
+
+        if (obj.CompareTag("Enemy"))
         {
-            //Debug.Log("碰撞成功");
-            if(flashRed!=null)
+            // 弹开期间同一 Enemy 不重复扣血
+            if (obj == lastHitBy && Time.time < knockbackEnd)
+                return;
+
+            lastHitBy = obj;
+
+            Vector2 pushDir = ((Vector2)transform.position - other.GetContact(0).point).normalized;
+            rb.velocity = pushDir * moveSpeed * knockbackForceMultiplier;
+            knockbackEnd = Time.time + knockbackDuration;
+
+            if(flashRed != null)
             {
                 StopCoroutine(FlashRed());
                 if (damageOverlay != null)
-                {
                     damageOverlay.color = new Color(1f, 0.5f, 0.5f, 0f);
-                }
-                flashRed=null;
+                flashRed = null;
             }
-            flashRed=StartCoroutine(FlashRed());
-            Enemy enemy = other.gameObject.GetComponent<Enemy>();    
+            flashRed = StartCoroutine(FlashRed());
+            Enemy enemy = obj.GetComponent<Enemy>();
             GameManager.Instance.PlayerTakeDamage(enemy.colliderdamege);
         }
     }

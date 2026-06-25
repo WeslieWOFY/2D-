@@ -44,7 +44,6 @@ public class jixietunshu : Enemy
     protected override void OnEnable()
     {
         base.OnEnable();
-        isDie=false;
         // 重置状态
         currentState = EnemyState.InitialRandomMove;
         //isMovingLeft = false;
@@ -54,7 +53,7 @@ public class jixietunshu : Enemy
         
         if (shootCoroutine != null)
         {
-        StopCoroutine(shootCoroutine);
+            StopCoroutine(shootCoroutine);
         }
     
     // 启动新的协程
@@ -186,7 +185,6 @@ public class jixietunshu : Enemy
     
     protected override void OnDeath()
     {
-        isDie=true;
         // 停止射击
         if (shootCoroutine != null)
         {
