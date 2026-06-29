@@ -23,6 +23,9 @@ public class SubmarineSecret : Enemy
     [SerializeField] private int grenadeMaxCount = 4;              // 每次最多发射数量
     [SerializeField] private float grenadeSpawnInterval = 0.3f;    // 每颗榴弹炮之间的间隔（秒）
 
+    [Header("潜水艇-激光")]
+    [SerializeField] private LaserEmitter laserEmitter;           // 激光发射器
+
     [Header("秘密关卡-入场")]
     [SerializeField] private float enterDuration = 3f;      // 入场阶段持续时间（秒），固定向左移动
 
@@ -91,7 +94,7 @@ public class SubmarineSecret : Enemy
 
     protected override void OnDisable()
     {
-        //base.OnDisable();
+        base.OnDisable();
         CleanupCoroutines();
     }
 
@@ -298,6 +301,15 @@ public class SubmarineSecret : Enemy
         gameObject.SetActive(false);
     }
 
+
+    protected override void OnDeath()
+    {
+        // 先彻底停掉激光，再播放爆炸特效
+        if (laserEmitter != null)
+            laserEmitter.Stop();
+
+        base.OnDeath();
+    }
 
     protected override void OnExitScreen()
     {

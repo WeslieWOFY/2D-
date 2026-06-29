@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -43,12 +43,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 80
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -95,7 +95,259 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: mis_boo_explosion_eff_r_00_0
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 3415
+        width: 75
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 95c371faadf15604cbe0db22d500082f
+      internalID: 976317566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mis_boo_explosion_eff_r_00_1
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 3094
+        width: 122
+        height: 121
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6669a7cc99501b842bc07de5ba7c698e
+      internalID: -2138894322
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mis_boo_explosion_eff_r_00_2
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 2769
+        width: 173
+        height: 161
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1313f266927bcfe4daaf257b333629a5
+      internalID: 1775242470
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mis_boo_explosion_eff_r_00_3
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 2450
+        width: 195
+        height: 187
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1c5b7283d7c9bba40be73de520a83881
+      internalID: -636549182
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mis_boo_explosion_eff_r_00_4
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 2167
+        width: 177
+        height: 188
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 447834d34972123469c3ba6f3f2b31ca
+      internalID: 380629389
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mis_boo_explosion_eff_r_00_5
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 1863
+        width: 174
+        height: 185
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 652334fca2e91c74c989b073d1717b7a
+      internalID: 1588868357
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mis_boo_explosion_eff_r_00_10
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 1557
+        width: 175
+        height: 167
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c230b6bab2d314f43944582944d8b7f1
+      internalID: -354821476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mis_boo_explosion_eff_r_00_16
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 1260
+        width: 161
+        height: 171
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d6c5734ebfa1e8e458a40ce3e5488b6f
+      internalID: 1539159389
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mis_boo_explosion_eff_r_00_40
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 989
+        width: 116
+        height: 123
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cf8df6e9b50835942b661af02695d808
+      internalID: 975663655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mis_boo_explosion_eff_r_00_67
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 678
+        width: 126
+        height: 141
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee9a8bd890dc41a4386cf20f03da212e
+      internalID: 436824416
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mis_boo_explosion_eff_r_00_93
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 395
+        width: 102
+        height: 109
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72d9eae08a7b0164981fc4625045f71f
+      internalID: 2132681379
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mis_boo_explosion_eff_r_00_113
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 125
+        width: 48
+        height: 56
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5dfd6cd2e22bb7a4e9728b2bb8568ceb
+      internalID: -1986868094
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -106,7 +358,143 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      mis_boo_explosion_eff_r_00_0: 976317566
+      mis_boo_explosion_eff_r_00_1: -2138894322
+      mis_boo_explosion_eff_r_00_10: -354821476
+      mis_boo_explosion_eff_r_00_100: 1632560998
+      mis_boo_explosion_eff_r_00_101: -1208028084
+      mis_boo_explosion_eff_r_00_102: 545452083
+      mis_boo_explosion_eff_r_00_103: 1498991779
+      mis_boo_explosion_eff_r_00_104: 380878652
+      mis_boo_explosion_eff_r_00_105: -130105331
+      mis_boo_explosion_eff_r_00_106: -108116755
+      mis_boo_explosion_eff_r_00_107: -1058021304
+      mis_boo_explosion_eff_r_00_108: -2070577690
+      mis_boo_explosion_eff_r_00_109: -856763461
+      mis_boo_explosion_eff_r_00_11: -811908563
+      mis_boo_explosion_eff_r_00_110: 1810240194
+      mis_boo_explosion_eff_r_00_111: 471532922
+      mis_boo_explosion_eff_r_00_112: -1560324526
+      mis_boo_explosion_eff_r_00_113: -1986868094
+      mis_boo_explosion_eff_r_00_114: -1414420806
+      mis_boo_explosion_eff_r_00_115: 1696394774
+      mis_boo_explosion_eff_r_00_116: 738651207
+      mis_boo_explosion_eff_r_00_117: 1307158963
+      mis_boo_explosion_eff_r_00_118: -547896704
+      mis_boo_explosion_eff_r_00_119: 1188844064
+      mis_boo_explosion_eff_r_00_12: 1132152933
+      mis_boo_explosion_eff_r_00_120: -1413850662
+      mis_boo_explosion_eff_r_00_121: 1646963249
+      mis_boo_explosion_eff_r_00_122: -914616995
+      mis_boo_explosion_eff_r_00_123: -412070087
+      mis_boo_explosion_eff_r_00_124: -854605904
+      mis_boo_explosion_eff_r_00_125: -296207663
+      mis_boo_explosion_eff_r_00_126: -585236887
+      mis_boo_explosion_eff_r_00_127: 1339956892
+      mis_boo_explosion_eff_r_00_128: 1891410189
+      mis_boo_explosion_eff_r_00_129: 1474710145
+      mis_boo_explosion_eff_r_00_13: 1229424231
+      mis_boo_explosion_eff_r_00_130: -1450840199
+      mis_boo_explosion_eff_r_00_131: -546087561
+      mis_boo_explosion_eff_r_00_132: -42513504
+      mis_boo_explosion_eff_r_00_133: -448922450
+      mis_boo_explosion_eff_r_00_134: 1336903513
+      mis_boo_explosion_eff_r_00_135: -750977650
+      mis_boo_explosion_eff_r_00_14: -526018011
+      mis_boo_explosion_eff_r_00_15: -226115150
+      mis_boo_explosion_eff_r_00_16: 1539159389
+      mis_boo_explosion_eff_r_00_17: 1040863064
+      mis_boo_explosion_eff_r_00_18: 749204196
+      mis_boo_explosion_eff_r_00_19: 1681892766
+      mis_boo_explosion_eff_r_00_2: 1775242470
+      mis_boo_explosion_eff_r_00_20: -12309757
+      mis_boo_explosion_eff_r_00_21: -224847298
+      mis_boo_explosion_eff_r_00_22: 509095852
+      mis_boo_explosion_eff_r_00_23: -2028826610
+      mis_boo_explosion_eff_r_00_24: 2110174954
+      mis_boo_explosion_eff_r_00_25: -662221497
+      mis_boo_explosion_eff_r_00_26: -562007635
+      mis_boo_explosion_eff_r_00_27: -1763567025
+      mis_boo_explosion_eff_r_00_28: -1423156610
+      mis_boo_explosion_eff_r_00_29: 1027460346
+      mis_boo_explosion_eff_r_00_3: -636549182
+      mis_boo_explosion_eff_r_00_30: -224762465
+      mis_boo_explosion_eff_r_00_31: 1964949087
+      mis_boo_explosion_eff_r_00_32: 1395732511
+      mis_boo_explosion_eff_r_00_33: 1543901542
+      mis_boo_explosion_eff_r_00_34: 1440307604
+      mis_boo_explosion_eff_r_00_35: 249202425
+      mis_boo_explosion_eff_r_00_36: -135525661
+      mis_boo_explosion_eff_r_00_37: -439966818
+      mis_boo_explosion_eff_r_00_38: -1276481228
+      mis_boo_explosion_eff_r_00_39: -1545511776
+      mis_boo_explosion_eff_r_00_4: 380629389
+      mis_boo_explosion_eff_r_00_40: 975663655
+      mis_boo_explosion_eff_r_00_41: -416060570
+      mis_boo_explosion_eff_r_00_42: -1603626044
+      mis_boo_explosion_eff_r_00_43: -320695179
+      mis_boo_explosion_eff_r_00_44: 1762805784
+      mis_boo_explosion_eff_r_00_45: -929294767
+      mis_boo_explosion_eff_r_00_46: 1563865465
+      mis_boo_explosion_eff_r_00_47: -152229247
+      mis_boo_explosion_eff_r_00_48: -677284098
+      mis_boo_explosion_eff_r_00_49: 1863586294
+      mis_boo_explosion_eff_r_00_5: 1588868357
+      mis_boo_explosion_eff_r_00_50: 201120434
+      mis_boo_explosion_eff_r_00_51: 1407876946
+      mis_boo_explosion_eff_r_00_52: 1542242381
+      mis_boo_explosion_eff_r_00_53: 521111843
+      mis_boo_explosion_eff_r_00_54: -421301032
+      mis_boo_explosion_eff_r_00_55: 1792316951
+      mis_boo_explosion_eff_r_00_56: -498114890
+      mis_boo_explosion_eff_r_00_57: -1192562993
+      mis_boo_explosion_eff_r_00_58: -538916249
+      mis_boo_explosion_eff_r_00_59: 1230604927
+      mis_boo_explosion_eff_r_00_6: 1270073795
+      mis_boo_explosion_eff_r_00_60: 284361869
+      mis_boo_explosion_eff_r_00_61: -1094373370
+      mis_boo_explosion_eff_r_00_62: 621148813
+      mis_boo_explosion_eff_r_00_63: 1239659621
+      mis_boo_explosion_eff_r_00_64: -1950833281
+      mis_boo_explosion_eff_r_00_65: 1838940968
+      mis_boo_explosion_eff_r_00_66: -1351342697
+      mis_boo_explosion_eff_r_00_67: 436824416
+      mis_boo_explosion_eff_r_00_68: 1112514123
+      mis_boo_explosion_eff_r_00_69: -522479749
+      mis_boo_explosion_eff_r_00_7: -1339712557
+      mis_boo_explosion_eff_r_00_70: -1554389347
+      mis_boo_explosion_eff_r_00_71: 1048796743
+      mis_boo_explosion_eff_r_00_72: -387011140
+      mis_boo_explosion_eff_r_00_73: -1320827583
+      mis_boo_explosion_eff_r_00_74: 200275999
+      mis_boo_explosion_eff_r_00_75: 1259374423
+      mis_boo_explosion_eff_r_00_76: 124162914
+      mis_boo_explosion_eff_r_00_77: -154491626
+      mis_boo_explosion_eff_r_00_78: -124954517
+      mis_boo_explosion_eff_r_00_79: -1128541113
+      mis_boo_explosion_eff_r_00_8: -752462425
+      mis_boo_explosion_eff_r_00_80: -604676234
+      mis_boo_explosion_eff_r_00_81: 446173830
+      mis_boo_explosion_eff_r_00_82: -899184082
+      mis_boo_explosion_eff_r_00_83: -1436092881
+      mis_boo_explosion_eff_r_00_84: 541164939
+      mis_boo_explosion_eff_r_00_85: 174465466
+      mis_boo_explosion_eff_r_00_86: -1137159646
+      mis_boo_explosion_eff_r_00_87: -1573822203
+      mis_boo_explosion_eff_r_00_88: -665223096
+      mis_boo_explosion_eff_r_00_89: 1713265960
+      mis_boo_explosion_eff_r_00_9: -1096708253
+      mis_boo_explosion_eff_r_00_90: 1778308376
+      mis_boo_explosion_eff_r_00_91: 423251411
+      mis_boo_explosion_eff_r_00_92: 1074641228
+      mis_boo_explosion_eff_r_00_93: 2132681379
+      mis_boo_explosion_eff_r_00_94: -890157746
+      mis_boo_explosion_eff_r_00_95: 73458615
+      mis_boo_explosion_eff_r_00_96: 481953953
+      mis_boo_explosion_eff_r_00_97: -1302784502
+      mis_boo_explosion_eff_r_00_98: 879619117
+      mis_boo_explosion_eff_r_00_99: 1131185479
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

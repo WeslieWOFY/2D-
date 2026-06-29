@@ -14,26 +14,17 @@ public class VariableSpeedBullet : EnemyBullet
     private bool hasSlowedDown;
     private Coroutine slowDownRoutine;
 
-    private void Awake()
-    {
-        // 只在首次实例化时记录一次，后续对象池复用不会再次调用
-        prefabOriginalSpeed = GetMoveSpeed();
-    }
-
     protected override void OnEnable()
     {
         hasSlowedDown = false;
-        // 恢复为预制体的原始速度，避免对象池复用导致速度逐轮递减
-        SetMoveSpeed(prefabOriginalSpeed);
-        originalSpeed = prefabOriginalSpeed;
-
+        originalSpeed = originalMoveSpeed;
         if (slowDownRoutine != null)
         StopCoroutine(slowDownRoutine);
         slowDownRoutine = StartCoroutine(SlowDownRoutine());
         base.OnEnable();
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
         if (slowDownRoutine != null)
         {

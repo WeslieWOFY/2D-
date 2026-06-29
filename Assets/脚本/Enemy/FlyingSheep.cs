@@ -16,7 +16,6 @@ public class FlyingSheep : Enemy
     private Coroutine shootCoroutine;
     private Coroutine verticalMoveRoutine;
 
-    private Animator animator;
 
     // 垂直移动的目标偏移量（相对初始位置）
     private float verticalTargetOffset;

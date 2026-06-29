@@ -8,9 +8,10 @@ using UnityEngine.UI;
 public class PlayerKongzhi : MonoBehaviour
 {
     [Header("移动设置")]
-    [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float knockbackDuration = 0.15f; // 弹开时间
-    [SerializeField] private float knockbackForceMultiplier = 1.2f; // 弹开力度倍数
+    [SerializeField] private  float moveSpeed = 5f;
+    [SerializeField] private  float knockbackDuration = 0.15f; // 弹开时间
+    [SerializeField] private  float knockbackForceMultiplier = 1.2f; // 弹开力度倍数（撞敌人）
+    [SerializeField] private  float bulletKnockbackMultiplier = 0.5f; // 弹开力度倍数（撞子弹，比撞敌人小）
     private Vector2 moveInput;
     private float knockbackEnd;
     private GameObject lastHitBy; // 上一次碰撞的对象，弹开期间同一对象不重复扣血
@@ -245,45 +246,73 @@ public class PlayerKongzhi : MonoBehaviour
         if (obj.CompareTag("EmenyBullet"))
         {
             Vector2 pushDir = ((Vector2)transform.position - other.GetContact(0).point).normalized;
-            rb.velocity = pushDir * moveSpeed * knockbackForceMultiplier;
-            knockbackEnd = Time.time + knockbackDuration;
-
-            if(flashRed != null)
-            {
-                StopCoroutine(FlashRed());
-                if (damageOverlay != null)
-                    damageOverlay.color = new Color(1f, 0.5f, 0.5f, 0f);
-                flashRed = null;
-            }
-            flashRed = StartCoroutine(FlashRed());
+            rb.velocity = pushDir * moveSpeed * bulletKnockbackMultiplier;
+            ExtendKnockback(Time.time + knockbackDuration);
+            ChangeRed();
             EnemyBullet bullet = obj.GetComponent<EnemyBullet>();
+            if(bullet!=null)
             GameManager.Instance.PlayerTakeDamage(bullet.GetDamage());
             return;
         }
 
         if (obj.CompareTag("Enemy"))
         {
-            // 弹开期间同一 Enemy 不重复扣血
-            if (obj == lastHitBy && Time.time < knockbackEnd)
-                return;
-
-            lastHitBy = obj;
-
             Vector2 pushDir = ((Vector2)transform.position - other.GetContact(0).point).normalized;
             rb.velocity = pushDir * moveSpeed * knockbackForceMultiplier;
-            knockbackEnd = Time.time + knockbackDuration;
-
-            if(flashRed != null)
-            {
-                StopCoroutine(FlashRed());
-                if (damageOverlay != null)
-                    damageOverlay.color = new Color(1f, 0.5f, 0.5f, 0f);
-                flashRed = null;
-            }
-            flashRed = StartCoroutine(FlashRed());
-            Enemy enemy = obj.GetComponent<Enemy>();
-            GameManager.Instance.PlayerTakeDamage(enemy.colliderdamege);
+            ExtendKnockback(Time.time + knockbackDuration);
         }
+    }
+    public void ChangeRed()
+    {
+        if(flashRed != null)
+        {
+            StopCoroutine(FlashRed());
+            if (damageOverlay != null)
+                damageOverlay.color = new Color(1f, 0.5f, 0.5f, 0f);
+            flashRed = null;
+        }
+        flashRed = StartCoroutine(FlashRed());
+    }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        Laser laser = other.GetComponent<Laser>();
+        if (laser != null)
+        {
+            ExtendKnockback(Time.time + knockbackDuration);
+            FlashRedTrigger();
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        Laser laser = other.GetComponent<Laser>();
+        if (laser == null) return;
+
+        FlashRedTrigger();
+    }
+
+    /// <summary>
+    /// 设置弹开结束时间，只延长不缩短
+    /// </summary>
+    private void ExtendKnockback(float newEnd)
+    {
+        if (newEnd > knockbackEnd)
+            knockbackEnd = newEnd;
+    }
+
+    /// <summary>
+    /// 触发屏幕变红（与子弹击中效果一致）
+    /// </summary>
+    private void FlashRedTrigger()
+    {
+        if (flashRed != null)
+        {
+            StopCoroutine(FlashRed());
+            if (damageOverlay != null)
+                damageOverlay.color = new Color(1f, 0.5f, 0.5f, 0f);
+            flashRed = null;
+        }
+        flashRed = StartCoroutine(FlashRed());
     }
 
     IEnumerator FlashRed()

@@ -17,6 +17,8 @@ using UnityEngine;
     public int damege = 10;  // 伤害
     
     public int colliderdamege=20;
+    public float damageCooldown = 0.5f;
+    protected float lastDamageTime = -1f;
     [SerializeField] protected AudioClip MisSFX;
     protected bool isDie;
     protected Coroutine flashRedCoroutine;
@@ -47,11 +49,12 @@ using UnityEngine;
         OnAttack();
     }
 
-    protected virtual void OnEnable()    
+    protected virtual void OnEnable()
     {
         currentHP = maxHP;
         spriteRenderer.color=originalColor;
         isDie=false;
+        lastDamageTime = -1f;
     }
     protected virtual void OnDisable()
     {
@@ -136,7 +139,29 @@ using UnityEngine;
             spriteRenderer.color = originalColor;
         }
     }
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        GameObject obj = other.gameObject;
+        if (obj.CompareTag("Player"))
+        {
+            if (Time.time - lastDamageTime < damageCooldown) return;
+            lastDamageTime = Time.time;
+            PlayerKongzhi Player=other.gameObject.GetComponent<PlayerKongzhi>();
+            Player.ChangeRed();
+            GameManager.Instance.PlayerTakeDamage(colliderdamege);
+        }
+    }
 
+    private void OnCollisionStay2D(Collision2D other)
+    {
+        GameObject obj = other.gameObject;
+        if (obj.CompareTag("Player"))
+        {
+            if (Time.time - lastDamageTime < damageCooldown) return;
+            lastDamageTime = Time.time;
+            GameManager.Instance.PlayerTakeDamage(colliderdamege);
+        }
+    }
     protected virtual void Retreat()
     {
         
