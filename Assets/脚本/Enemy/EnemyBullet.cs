@@ -22,6 +22,9 @@ public class EnemyBullet : MonoBehaviour  // 确保继承 MonoBehaviour
 
     bool isdade;
     private Coroutine timeoutCoroutine;
+
+    // ========== 事件总线：清屏弹幕 ==========
+    private static float _banEndTime;  // 禁止启用的截止时间，所有子弹共享
     protected float originalMoveSpeed;
     private Vector2 originalMoveDirection;
     protected float leftBoundary;
@@ -51,6 +54,13 @@ public class EnemyBullet : MonoBehaviour  // 确保继承 MonoBehaviour
     }
     protected virtual void OnEnable()
     {
+        // 全局禁止期内，对象池取出的子弹直接禁用
+        if (Time.time < _banEndTime)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
         isdade=false;
 
         // 重置为原始值（对象池复用时避免残留上次修改）
@@ -66,10 +76,16 @@ public class EnemyBullet : MonoBehaviour  // 确保继承 MonoBehaviour
             if (timeoutCoroutine != null) StopCoroutine(timeoutCoroutine);
             timeoutCoroutine = StartCoroutine(TimeoutDisable());
         }
+
+        // 签到事件总线：激活期间收到清屏事件则自禁
+        LevelEventBus.On("ClearAllBullets", OnClearAllBullets);
     }
 
     protected virtual void OnDisable()
     {
+        // 签退事件总线：已失活的子弹不再响应清屏事件
+        LevelEventBus.Off("ClearAllBullets", OnClearAllBullets);
+
         if (timeoutCoroutine != null)
         {
             StopCoroutine(timeoutCoroutine);
@@ -151,6 +167,15 @@ public class EnemyBullet : MonoBehaviour  // 确保继承 MonoBehaviour
     private IEnumerator TimeoutDisable()
     {
         yield return new WaitForSeconds(timeoutDuration);
+        gameObject.SetActive(false);
+    }
+
+    /// <summary>事件总线回调：收到清屏事件时立即自禁，并设全局禁止期</summary>
+    private void OnClearAllBullets(object data = null)
+    {
+        // data 可传自定义禁用秒数，不传默认 3 秒
+        float duration = (data is float f) ? f : 3f;
+        _banEndTime = Time.time + duration;
         gameObject.SetActive(false);
     }
     private void OnCollisionEnter2D(Collision2D other)

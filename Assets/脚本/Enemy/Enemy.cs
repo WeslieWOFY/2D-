@@ -124,10 +124,6 @@ using UnityEngine;
 
             int totalDamage = bullet.damage + GameManager.Instance.attackPower;
             TakeDamage(totalDamage);
-            if(bullet.getfalse())
-            {
-                other.gameObject.SetActive(false);
-            }
         }
     }
     protected IEnumerator FlashRed()

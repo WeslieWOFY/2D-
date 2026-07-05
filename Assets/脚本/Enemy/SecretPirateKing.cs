@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class SecretPirateKing : Enemy
+public class SecretPirateKing : Enemy, ISecretBoss
 {
     [Header("秘密关卡-入场")]
     [SerializeField] private float enterDuration = 3f;      // 入场阶段持续时间（秒），固定向左移动

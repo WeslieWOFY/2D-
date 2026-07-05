@@ -45,6 +45,28 @@ public class PlayerKongzhi : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
+    private void OnEnable()
+    {
+        LevelEventBus.On("RequestPlayerPosition", OnRequestPlayerPosition);
+    }
+
+    private void OnDisable()
+    {
+        LevelEventBus.Off("RequestPlayerPosition", OnRequestPlayerPosition);
+    }
+
+    /// <summary>
+    /// 响应位置请求事件：填写当前坐标，供 HomingBulletEmitter 等跟踪系统使用
+    /// </summary>
+    private void OnRequestPlayerPosition(object data)
+    {
+        if (data is PlayerPositionRequest request)
+        {
+            request.Position = transform.position;
+            request.HasPosition = true;
+        }
+    }
+
     private void Start()
     {
         mainCamera = Camera.main;

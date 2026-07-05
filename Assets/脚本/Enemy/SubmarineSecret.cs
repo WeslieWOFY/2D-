@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 //using Unity.Mathematics;
 using UnityEngine;
-
-public class SubmarineSecret : Enemy
+public class SubmarineSecret : Enemy, ISecretBoss
 {
     [Header("潜水艇-鱼雷")]
     [SerializeField] private GameObject torpedoPrefab;      // 鱼雷预制体

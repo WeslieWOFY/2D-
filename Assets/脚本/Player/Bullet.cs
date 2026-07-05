@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Bullet : MonoBehaviour
 {
@@ -35,4 +36,12 @@ public class Bullet : MonoBehaviour
             || viewPos.y > 1 + outOfScreenMargin;
     }
     public bool getfalse() =>issetfalse;
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Enemy"))
+        {
+            if(issetfalse)
+            gameObject.SetActive(false);
+        }
+    }
 }
