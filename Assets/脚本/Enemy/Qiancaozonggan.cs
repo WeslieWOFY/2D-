@@ -47,6 +47,14 @@ public class Qiancaozonggan : MonoBehaviour
 
     private void OnDisable()
     {
+        StopAttack();
+    }
+
+    /// <summary>
+    /// 停止攻击协程（由父物体撤退时调用）
+    /// </summary>
+    public void StopAttack()
+    {
         if (shootCoroutine != null)
         {
             StopCoroutine(shootCoroutine);

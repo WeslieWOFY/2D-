@@ -162,7 +162,11 @@ MonoBehaviour:
   isrotate: 0
   disableOutOfBounds: 1
   boundsOffset: 1
+  disableByTimeout: 0
+  timeoutDuration: 5
   riseSpeed: 4
   fallSpeed: 5
   waitBeforeFall: 1
   riseHeightOffset: 2
+  minSpinSpeed: 30
+  maxSpinSpeed: 150

@@ -10,7 +10,7 @@ public class OrangeCockroach : petbase
         {
             PoolManager.Release(bulletPrefabs[0], spawnPoints[0].position);
             PoolManager.Release(bulletPrefabs[0], spawnPoints[1].position);
-            AudioManager.Instance.PlaySFX(projectSFX,GameManager.volume);
+            AudioManager.Instance.PlaySFX(projectSFX);
             yield return new WaitForSeconds(attackInterval);
         }
     }

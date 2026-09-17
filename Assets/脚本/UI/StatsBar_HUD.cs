@@ -32,12 +32,14 @@ public class StatsBar_HUD : MonoBehaviour
     float targetManaFillValue;
 
     float t;
+    // 跨场景可销毁：不再 DontDestroyOnLoad，血条随场景加载/卸载生灭。
+    // 每个关卡场景自带一份 HUD，重玩/切场景时新场景的 HUD 重新接管
+    // （Awake 里重新绑定新场景的摄像机，避免旧实例引用已销毁摄像机导致 UI 消失）。
     void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -46,6 +48,11 @@ public class StatsBar_HUD : MonoBehaviour
         canvas=GetComponent<Canvas>();
         canvas.worldCamera=Camera.main;
         waitForDelayFill=new WaitForSeconds(fillDelay);
+    }
+
+    void OnDestroy()
+    {
+        if (Instance == this) Instance = null;
     }
 
     void Start()
@@ -58,6 +65,10 @@ public class StatsBar_HUD : MonoBehaviour
             GameManager.Instance.Init+=Initialize;
             GameManager.Instance.OnPlayerManaChanged -= HandleManaChanged;
             GameManager.Instance.OnPlayerManaChanged += HandleManaChanged;
+
+            // 重玩等场景重载时 GameManager 已常驻、Init 事件不会再触发，
+            // 这里直接按管理器当前值初始化血/蓝条（管理器是唯一数据源）
+            Initialize(GameManager.Instance.PlayerCurrentHealth, GameManager.Instance.playerMaxHealth);
         }
     }
     void OnEnable()
@@ -84,7 +95,7 @@ public class StatsBar_HUD : MonoBehaviour
 
     void HandleHealthChanged(int currentHealth, int changeAmount)
     {
-        UpdateStats(currentHealth, GameManager.Instance.playerMaxHealth);
+        UpdateStats(currentHealth, changeAmount);
     }
 
     void HandleManaChanged(int currentMana, int maxMana)
@@ -95,7 +106,7 @@ public class StatsBar_HUD : MonoBehaviour
     public void Initialize(int currentValue,int playerMaxHealth)
     {
         currentFillValue=currentValue*(1.0f)/playerMaxHealth;
-        targetFillValue=playerMaxHealth*(1.0f);
+        targetFillValue=currentFillValue;
         fillImageBack.fillAmount=currentFillValue;
         fillImageFront.fillAmount=currentFillValue;
         InitializeMana(GameManager.Instance.PlayerCurrentMana, GameManager.Instance.playerMaxMana);

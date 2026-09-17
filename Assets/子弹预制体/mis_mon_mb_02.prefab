@@ -105,6 +105,8 @@ MonoBehaviour:
   isrotate: 0
   disableOutOfBounds: 1
   boundsOffset: 1
+  disableByTimeout: 0
+  timeoutDuration: 5
   slowDownDelay: 0.8
 --- !u!58 &-3031535590994569206
 CircleCollider2D:
@@ -140,4 +142,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.15000002
+  m_Radius: 0.14

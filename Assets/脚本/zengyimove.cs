@@ -59,14 +59,14 @@ public class zengyimove : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            AudioManager.Instance.PlaySFX(SFX,GameManager.volume);
+            AudioManager.Instance.PlaySFX(SFX);
             switch(triggerType)
             {
                 case TriggerType.Heal :
-                GameManager.Instance.HealPlayer((int)(GameManager.Instance.playerMaxHealth*0.2));
+                GameManager.Instance.HealPlayer(Mathf.CeilToInt(GameManager.Instance.playerMaxHealth * 0.2f));              
                 break;
                 case TriggerType.MPHeal :
-                GameManager.Instance.RestoreMana((int)(GameManager.Instance.playerMaxHealth*0.2));
+                GameManager.Instance.RestoreMana(Mathf.CeilToInt(GameManager.Instance.playerMaxMana * 0.2f));                
                 break;
                 case TriggerType.SpeedUp:
 

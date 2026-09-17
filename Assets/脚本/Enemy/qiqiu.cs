@@ -61,7 +61,7 @@ public class qiqiu : Enemy
             if (flashRedCoroutine != null) StopCoroutine(flashRedCoroutine);
             flashRedCoroutine = StartCoroutine(FlashRed());
             // 受击音效
-            AudioManager.Instance.PlaySFX(MisSFX, GameManager.volume);
+            AudioManager.Instance.PlaySFX(MisSFX);
             // 回收子弹
             if (bullet != null && bullet.getfalse())
             {

@@ -28,13 +28,14 @@ public class GameManager : MonoBehaviour
 
     public int lever = 1;//玩家等级
 
-    public static float volume=1f;
+    private int playerCurrentHealth;
+    private int playerCurrentMana;
     
+    private int Playerexp;//经验值
+
     [Header("当前宠物属性")]
     public string petAttackType = "Fire"; // Fire, Ice, Thunder
     
-    private int playerCurrentHealth;
-    private int playerCurrentMana;
 
     public System.Action<int, int> OnPlayerTakeDamage;
     public System.Action<int, int> OnPlayerManaChanged;
@@ -93,7 +94,8 @@ public class GameManager : MonoBehaviour
     public void FullyHealPlayer()
     {
         playerCurrentHealth = playerMaxHealth;
-        //Debug.Log($"人物完全恢复，当前血量 {playerCurrentHealth}/{playerMaxHealth}");
+        // 广播血量变化，让常驻血条 UI 同步到满血
+        OnPlayerTakeDamage?.Invoke(playerCurrentHealth, playerMaxHealth);
     }
 
     public void HealPlayerPercentage(float percentage)

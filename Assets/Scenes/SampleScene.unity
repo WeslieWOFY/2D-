@@ -3990,7 +3990,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sFxPlayer: {fileID: 93102881}
   xuli: {fileID: 1126878980}
+  musicPlayer: {fileID: 846293570}
   xuliSFX: {fileID: 8300000, guid: ffef9ed094afc794695fd287c3b83894, type: 3}
+  _musicVolume: 1
+  _sfxVolume: 1
 --- !u!1 &1978030914
 GameObject:
   m_ObjectHideFlags: 0

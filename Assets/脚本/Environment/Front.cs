@@ -10,7 +10,7 @@ public class Front : MonoBehaviour
     [Header("生成参数")]
     [SerializeField] private float spawnInterval = 10f;
     [SerializeField] private float randomY =2f;
-    [SerializeField]    public float maxLifeTime = 15f;  // 最大生命周期（秒），超时强制回收
+    [SerializeField] public float maxLifeTime = 15f;  // 最大生命周期（秒），超时强制回收
     [SerializeField] private float sp = 2f;
     [SerializeField] private float first = 2f;
 

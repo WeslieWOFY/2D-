@@ -170,7 +170,7 @@ public class juqingEvent : MonoBehaviour
 
     public void PlayWaring()
     {
-        AudioManager.Instance.PlaySFX(waring,GameManager.volume);
+        AudioManager.Instance.PlaySFX(waring);
     }
 
         // 动画事件调用的方法

@@ -82,7 +82,7 @@ using UnityEngine;
     // 死亡
     protected IEnumerator Baozha()
     {
-        AudioManager.Instance.PlaySFX(baozhaSFX,GameManager.volume);
+        AudioManager.Instance.PlaySFX(baozhaSFX);
         foreach(Transform transform in boomTransform)
         {
             PoolManager.Release(baozha,transform.position);
@@ -115,7 +115,7 @@ using UnityEngine;
         if(isDie) return ;
         if (other.CompareTag("PlayerBullet"))
         {
-            AudioManager.Instance.PlaySFX(MisSFX,GameManager.volume);   
+            AudioManager.Instance.PlaySFX(MisSFX);   
             Bullet bullet = other.GetComponent<Bullet>();
             if (flashRedCoroutine != null)
             StopCoroutine(flashRedCoroutine);

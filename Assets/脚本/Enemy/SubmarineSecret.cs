@@ -25,6 +25,10 @@ public class SubmarineSecret : Enemy, ISecretBoss
     [Header("潜水艇-激光")]
     [SerializeField] private LaserEmitter laserEmitter;           // 激光发射器
 
+    [Header("潜水艇-子武器")]
+    [SerializeField] private Qiancaozonggan qiancaozonggan;       // 前操纵杆
+    [SerializeField] private Chuanjiang chuanjiang;               // 船桨
+
     [Header("秘密关卡-入场")]
     [SerializeField] private float enterDuration = 3f;      // 入场阶段持续时间（秒），固定向左移动
 
@@ -266,6 +270,28 @@ public class SubmarineSecret : Enemy, ISecretBoss
     protected override void Retreat()
     {
         if (retreatCoroutine != null) return;
+
+        // 停止所有攻击协程
+        if (torpedoCoroutine != null)
+        {
+            StopCoroutine(torpedoCoroutine);
+            torpedoCoroutine = null;
+        }
+        if (grenadeCoroutine != null)
+        {
+            StopCoroutine(grenadeCoroutine);
+            grenadeCoroutine = null;
+        }
+
+        // 停止激光
+        if (laserEmitter != null)
+            laserEmitter.Stop();
+
+        // 停止子武器攻击
+        if (qiancaozonggan != null)
+            qiancaozonggan.StopAttack();
+        if (chuanjiang != null)
+            chuanjiang.StopAttack();
 
         // 停止漂移
         if (wanderCoroutine != null)

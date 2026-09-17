@@ -296,18 +296,14 @@ public class RotatingWheel : MonoBehaviour
         if (!collision.gameObject.CompareTag("Player")) return;
         if (Time.time - lastDamageTime < damageCooldown) return;
         lastDamageTime = Time.time;
+        PlayerKongzhi Player=collision.gameObject.GetComponent<PlayerKongzhi>();
+        Player.ChangeRed();
         GameManager.Instance.PlayerTakeDamage(colliderdamege);
     }
 
     // 触发器碰撞：禁用玩家子弹
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("PlayerBullet"))
-        {
-            Bullet bullet = other.GetComponent<Bullet>();
-            if(bullet.getfalse())
-            other.gameObject.SetActive(false);
-        }
     }
 
     // ==================== 清理 ====================

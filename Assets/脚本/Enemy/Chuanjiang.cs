@@ -40,9 +40,18 @@ public class Chuanjiang : MonoBehaviour
 
     private void OnDisable()
     {
+        StopAttack();
+    }
+
+    /// <summary>
+    /// 停止攻击协程（由父物体撤退时调用）
+    /// </summary>
+    public void StopAttack()
+    {
         StopAllCoroutines();
         shootCoroutine = null;
         scaleCoroutine = null;
+        transform.localScale = originalScale;
     }
 
     private void Update()

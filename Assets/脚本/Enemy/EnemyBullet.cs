@@ -158,6 +158,22 @@ public class EnemyBullet : MonoBehaviour  // 确保继承 MonoBehaviour
     {
         return moveDirection;
     }
+
+    /// <summary>设置是否超出边界禁用（外部组件如 BulletSplitter 可调用）</summary>
+    public void SetDisableOutOfBounds(bool value)
+    {
+        disableOutOfBounds = value;
+    }
+
+    /// <summary>启用超时禁用，并设置超时时长（立即启动协程）</summary>
+    public void EnableTimeout(float duration)
+    {
+        disableByTimeout = true;
+        timeoutDuration = duration;
+        if (timeoutCoroutine != null) StopCoroutine(timeoutCoroutine);
+        timeoutCoroutine = StartCoroutine(TimeoutDisable());
+    }
+
     IEnumerator Setfasle(float cd)
     {
         yield return new WaitForSeconds(cd);

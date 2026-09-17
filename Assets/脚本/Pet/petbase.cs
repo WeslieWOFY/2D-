@@ -93,7 +93,7 @@ public abstract class petbase : MonoBehaviour
     public void StartCharge()
     {        // 开始播放
         canvas.gameObject.SetActive(true);
-        AudioManager.Instance.PlayxuliSFX(GameManager.volume);
+        AudioManager.Instance.PlayxuliSFX();
         if(attackCoroutine!=null)
         {
             StopCoroutine(attackCoroutine);
@@ -131,7 +131,7 @@ public abstract class petbase : MonoBehaviour
         {
             if (GameManager.Instance.TryUseMana(manaCost))
             {
-                AudioManager.Instance.PlaySFX(xuliattacksFX,GameManager.volume);
+                AudioManager.Instance.PlaySFX(xuliattacksFX);
                 PoolManager.Release(xulibulletPrefabs, xuli.position);
             }
         }

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4738579064779643738}
   - component: {fileID: 6927795657595411970}
   - component: {fileID: 6440921229297317033}
+  - component: {fileID: 8125529996823568330}
   m_Layer: 9
   m_Name: mis_ep15_dg00_mb_149_00_0
   m_TagString: EmenyBullet
@@ -163,4 +164,39 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: -0.09, y: 0}
   serializedVersion: 2
-  m_Radius: 0.18
+  m_Radius: 0.15
+--- !u!58 &8125529996823568330
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5836105176323914870}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.1, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.15

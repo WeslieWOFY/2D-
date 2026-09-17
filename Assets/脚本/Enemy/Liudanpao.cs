@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// 榴弹炮：启用后直线上升飞出屏幕 → 完全出屏后随机Z角度+随机X位置 → 纯直线下落。
+/// 榴弹炮：启用后直线上升飞出屏幕 → 完全出屏后随机X位置+随机速度自旋 → 直线下落。
 /// </summary>
 public class Liudanpao : EnemyBullet
 {
@@ -11,10 +11,13 @@ public class Liudanpao : EnemyBullet
     [SerializeField] private float fallSpeed = 5f;
     [SerializeField] private float waitBeforeFall = 1f;
     [SerializeField] private float riseHeightOffset = 2f;
+    [SerializeField] private float minSpinSpeed = 90f;
+    [SerializeField] private float maxSpinSpeed = 360f;
 
     private enum BulletState { Rising, Waiting, Falling }
     private BulletState currentState;
     private Coroutine waitRoutine;
+    private float spinSpeed;
 
     protected override void OnEnable()
     {
@@ -44,9 +47,8 @@ public class Liudanpao : EnemyBullet
                 Move();
                 if (transform.position.y > topBoundary + riseHeightOffset)
                 {
-                    // 完全出屏，锁定一个随机Z角度（只改这一次）
-                    float randomZ = Random.Range(0f, 360f);
-                    transform.rotation = Quaternion.Euler(0, 0, randomZ);
+                    // 完全出屏，随机自旋速度
+                    spinSpeed = Random.Range(minSpinSpeed, maxSpinSpeed);
 
                     currentState = BulletState.Waiting;
                     waitRoutine = StartCoroutine(WaitThenFall());
@@ -57,7 +59,8 @@ public class Liudanpao : EnemyBullet
                 break;
 
             case BulletState.Falling:
-                // 世界空间直线下落，不受Z旋转影响
+                // 自旋 + 世界空间直线下落
+                transform.Rotate(0, 0, spinSpeed * Time.deltaTime);
                 transform.Translate(Vector2.down * fallSpeed * Time.deltaTime, Space.World);
                 if (transform.position.y < bottomBoundary - boundsOffset)
                 {

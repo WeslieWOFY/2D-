@@ -17,6 +17,9 @@ public class LaserEmitter : MonoBehaviour
     private Coroutine fireCoroutine;
     private bool stopped;
 
+    /// <summary>激光特效是否正在播放（供外部判断激光是否结束）</summary>
+    public bool IsEffectActive => effectObject != null && effectObject.activeSelf;
+
     private void OnEnable()
     {
         stopped = false;

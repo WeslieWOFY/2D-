@@ -6,7 +6,7 @@ using UnityEngine;
 public class LaserEffect : MonoBehaviour
 {
     [Header("激光")]
-    [SerializeField] private GameObject[] lasers;             // 激光物体（特效的子物体）
+    [SerializeField] private GameObject[] lasers;             // 激光物体
     [SerializeField] private LaserEmitter emitter;            // 激光发射器（用于回调）
     [SerializeField] private float duration = 2f;             // 激光持续时间
 
