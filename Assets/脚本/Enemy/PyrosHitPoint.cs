@@ -15,7 +15,7 @@ public class PyrosHitPoint : Enemy
     [SerializeField] private SpriteRenderer childSpriteRenderer;   // 子物体精灵（受击联动变红，可留空）
 
     [Header("死亡通知")]
-    [SerializeField] private string destroyEventName = "BossDied";   // 死亡时广播的关卡事件名
+    [SerializeField] private string destroyEventName = BossEvents.Died;   // 死亡时广播的关卡事件名
     [Tooltip("死亡时是否通过事件总线通知所有子弹禁用自身")]
     [SerializeField] private bool clearBulletsOnDeath = true;
     [Tooltip("清屏事件名（EnemyBullet 已监听该事件并自禁）")]
@@ -23,10 +23,6 @@ public class PyrosHitPoint : Enemy
     [Tooltip("子弹禁用持续期（秒）：0 只禁用当前在场子弹；>0 期间新生成的子弹也会被禁用")]
     [SerializeField] private float clearBulletBanDuration = 0f;
     [SerializeField] private Pyros parentBoss;                     // 父物体派罗斯（Inspector 直接拖拽引用）
-
-    // 事件名约定（与 BossHealthBar 血条解耦，仅靠事件总线联动）
-    private const string BossAppearEvent = "BossAppear";           // 出现（带 maxHP，血条据此满血显示）
-    private const string BossHpChangedEvent = "BossHpChanged";     // 掉血（带 currentHP，血条据此更新）
 
     // ── 子物体颜色缓存 ──
     private Color childOriginalColor;
@@ -63,7 +59,7 @@ public class PyrosHitPoint : Enemy
         childColorSaved = false;
 
         // 派罗斯出现：广播满血事件，BOSS 血条据此出现（解耦，不直接引用血条）
-        LevelEventBus.Trigger(BossAppearEvent, maxHP);
+        BossEvents.NotifyAppear(maxHP);
     }
 
     protected override void OnDisable()
@@ -90,7 +86,7 @@ public class PyrosHitPoint : Enemy
     public override void TakeDamage(int damage)
     {
         base.TakeDamage(damage);
-        LevelEventBus.Trigger(BossHpChangedEvent, currentHP);
+        BossEvents.NotifyHpChanged(currentHP);
     }
 
     // ==================== 受击闪红（含子物体联动） ====================

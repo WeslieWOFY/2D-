@@ -30,6 +30,12 @@ using UnityEngine;
 
     [SerializeField] protected AudioClip baozhaSFX;
     protected Animator animator;
+
+    // ==================== 受击开关 ====================
+    [Header("受击开关")]
+    [Tooltip("关闭时玩家子弹打上来不扣血、不播受击音效、不闪红。默认为开；" +
+             "超级 BOSS 会按形态切换自行开关这个标志")]
+    [SerializeField] protected bool hitEnabled = true;
     protected virtual void Awake()
     {
         currentHP = maxHP;
@@ -67,9 +73,21 @@ using UnityEngine;
     // 攻击逻辑（子类必须实现）
     public abstract void OnAttack();
 
+    /// <summary>受击开关是否打开；关闭时打上来没有任何反应</summary>
+    public bool HitEnabled => hitEnabled;
+
+    /// <summary>打开受击开关</summary>
+    public virtual void EnableHit() { hitEnabled = true; }
+
+    /// <summary>关闭受击开关</summary>
+    public virtual void DisableHit() { hitEnabled = false; }
+
     // 受伤
     public virtual void TakeDamage(int damage)
     {
+        // 受击开关没打开：不扣血、不触发死亡
+        if (!hitEnabled) return;
+
         if(currentHP-damage>=0)
         currentHP -= damage;
         else
@@ -113,6 +131,9 @@ using UnityEngine;
     protected virtual void OnTriggerEnter2D(Collider2D other)
     {
         if(isDie) return ;
+        // 受击开关没打开：不播受击音效、不闪红、不扣血。
+        // 注意只管敌人这边的反应；子弹自身撞上后消失是 Bullet 类的事，不受这个开关影响
+        if(!hitEnabled) return ;
         if (other.CompareTag("PlayerBullet"))
         {
             AudioManager.Instance.PlaySFX(MisSFX);   
